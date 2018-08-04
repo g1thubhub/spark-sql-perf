@@ -25,7 +25,7 @@ case class SumAndCount(var sum: Long, var count: Int)
 
 class DatasetPerformance extends Benchmark {
 
-  import sqlContext.implicits._
+  import session.implicits._
 
   val numLongs = 100000000
   val ds = sqlContext.range(1, numLongs)

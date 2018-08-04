@@ -4,7 +4,7 @@ import org.apache.spark.sql.{Row, SQLContext}
 
 trait AggregationPerformance extends Benchmark {
 
-  import sqlContext.implicits._
+  import session.implicits._
   import ExecutionMode._
 
 

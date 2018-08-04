@@ -22,33 +22,32 @@ import scala.concurrent._
 import scala.concurrent.duration._
 import scala.language.implicitConversions
 import scala.util.{Success, Try, Failure => SFailure}
-
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{Dataset, DataFrame, SQLContext}
+import org.apache.spark.sql.{DataFrame, Dataset, SQLContext, SparkSession}
 import org.apache.spark.sql.catalyst.analysis.UnresolvedRelation
 import org.apache.spark.SparkContext
-
 import com.databricks.spark.sql.perf.cpu._
 
 /**
  * A collection of queries that test a particular aspect of Spark SQL.
  *
- * @param sqlContext An existing SQLContext.
+ * @param session An existing SparkSession.
  */
 abstract class Benchmark(
-    @transient val sqlContext: SQLContext)
+    @transient val session: SparkSession)
   extends Serializable {
 
   import Benchmark._
 
-  def this() = this(SQLContext.getOrCreate(SparkContext.getOrCreate()))
+  def this() = this(SparkSession.builder().getOrCreate())
 
   val resultsLocation =
     sqlContext.getAllConfs.getOrElse(
       "spark.sql.perf.results",
       "/spark/sql/performance")
 
-  protected def sparkContext = sqlContext.sparkContext
+  protected def sparkContext = session.sparkContext
+  protected def sqlContext = session.sqlContext
 
   protected implicit def toOption[A](a: A): Option[A] = Option(a)
 

@@ -7,7 +7,7 @@ trait JoinPerformance extends Benchmark {
   // 1.5 mb, 1 file
 
   import ExecutionMode._
-  import sqlContext.implicits._
+  import session.implicits._
 
   private val table = sqlContext.table _
 
